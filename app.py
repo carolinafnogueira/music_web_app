@@ -1,27 +1,32 @@
 import os
+from lib.album import Album
+from lib.album_repository import AlbumRepository
 from flask import Flask, request
+from lib.database_connection import get_flask_database_connection
 
 # Create a new Flask app
 app = Flask(__name__)
 
 # == Your Routes Here ==
+@app.route('/albums', methods=['POST'])
+def create_album():
+    connection = get_flask_database_connection(app)
+    repository = AlbumRepository(connection)
+    album = Album(
+        None, 
+        request.form['title'], 
+        request.form['release_year'], 
+        request.form['artist_id']
+        )
+    repository.add_album(album)
+    return ""
 
-# == Example Code Below ==
+@app.route('/albums', methods=['GET'])
+def get_albums():
+    connection = get_flask_database_connection(app)
+    repository = AlbumRepository(connection)
+    return '\n'.join([str(album) for album in repository.all()])
 
-# GET /emoji
-# Returns a emojiy face
-# Try it:
-#   ; curl http://localhost:5000/emoji
-@app.route('/emoji', methods=['GET'])
-def get_emoji():
-    return ":)"
-
-# This imports some more example routes for you to see how they work
-# You can delete these lines if you don't need them.
-from example_routes import apply_example_routes
-apply_example_routes(app)
-
-# == End Example Code ==
 
 # These lines start the server if you run this file directly
 # They also start the server configured to use the test database
