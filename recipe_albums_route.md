@@ -19,6 +19,19 @@ path: /albums
 parameters: none
 return: human-readable list of 
 
+GET /artists
+no parameters
+Expected response: (200 OK)
+Pixies, ABBA, Taylor Swift, Nina Simone
+
+POST /arists
+body parameters:
+  name=Wild nothing
+  genre=indie
+# Expected response (200 OK)
+(No content)
+
+
 ```
 
 ## 2. Create Examples as Tests
